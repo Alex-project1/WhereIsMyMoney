@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vite App</title>
+</head>
+
+<body>
+  <header>
+    <h1>Где БАБАКИ ???</h1>
+  </header>
+  <main>
+    <div class="container">
+
+      <div class="buttons" id="buttons">
+        <div class="button expensesBtn" data-item="expense">РАСХОДЫ</div>
+        <div class="button incomeBtn" data-item="income">ДОХОДЫ</div>
+      </div>
+      <div class="wrapper">
+        <div class="itemBody active" id="expense">
+          <div class="itemWrapper">
+            <div class="item">
+              <div class="item__title">
+                РАСХОДЫ
+              </div>
+              <div class="item__body">
+                <div class="item__body-row">
+                  <input type="number">
+                  <select name="" id="">
+                    <option value="">Еда</option>
+                    <option value="">Заправка</option>
+                    <option value="">Кофе</option>
+                  </select>
+
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="itemBody" id="income">
+          <div class="itemWrapper">
+            <div class="item">
+              <div class="item__title">
+                ДОХОДЫ
+              </div>
+              <div class="item__body">
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <p> «Где БАБАКИ?» - Трать разумно, живи комфортно</p>
+  </footer>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>

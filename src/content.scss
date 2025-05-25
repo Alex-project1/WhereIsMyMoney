@@ -1,0 +1,86 @@
+.wrapper {
+  margin-top: 25px;
+}
+.itemBody {
+  display: grid;
+  grid-template-rows: 0fr;
+  text-align: center;
+  transition: all 0.3s;
+  &.active {
+    grid-template-rows: 1fr;
+  }
+  .itemWrapper {
+    overflow: hidden;
+  }
+  .item {
+    &__body {
+      max-height: 60dvh;
+      overflow-y: auto;
+      overflow-x: hidden; // Отключаем горизонтальный скролл у контейнера
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      margin: 15px;
+      padding: 15px;
+      background: #fefefe;
+      transition: box-shadow 0.3s ease;
+      box-sizing: border-box; // важный момент
+
+      &:hover {
+        box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+      }
+    }
+
+    &__body-row {
+      padding: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.07);
+      border-radius: 8px;
+      background: #fff;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      transition: box-shadow 0.3s ease;
+
+      &:focus-within {
+        box-shadow: 0 0 0 3px #007bff;
+      }
+
+      & + & {
+        margin-top: 20px;
+      }
+
+      input[type="number"] {
+        flex: 1;
+        min-width: 0; // позволяет элементу сжиматься
+        padding: 0.5rem 0.75rem;
+        border: 1.5px solid #ccc;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        outline: none;
+
+        &:focus {
+          border-color: #007bff;
+          box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+        }
+      }
+
+      select {
+        flex-shrink: 0; // не даём select сжиматься ниже содержимого
+        width: 150px; // фиксируем ширину для select, чтобы не ломать дизайн
+        padding: 0.5rem 0.75rem;
+        border: 1.5px solid #ccc;
+        border-radius: 8px;
+        background: #fff;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        outline: none;
+
+        &:focus {
+          border-color: #007bff;
+          box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+        }
+      }
+    }
+  }
+}
