@@ -19,7 +19,15 @@
 
   .item {
     &__title {
-      padding: 15px;
+      font-size: 20px;
+      font-weight: 600;
+      background-color: #f0f0f0;
+      color: #333;
+      padding: 10px 16px;
+      border-radius: 8px;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
     &__body {
       overflow-y: auto;
@@ -48,6 +56,8 @@
       gap: 1rem;
       transition: box-shadow 0.3s ease;
       border: 2px solid #ccc;
+      position: relative;
+
       & + .item__body-row {
         margin-top: 15px;
       }
@@ -140,4 +150,9 @@
 .addedRow:active {
   background-color: #3e8e41; /* нажатие */
   transform: scale(0.98);
+}
+.time {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
 }

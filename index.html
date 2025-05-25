@@ -10,16 +10,45 @@
 
 <body>
   <header>
-    <h1>Где БАБАКИ ???</h1>
+    <h1>Где БАБКИ ???</h1>
   </header>
   <main>
 
-
     <div class="buttons" id="buttons">
-      <div class="button expensesBtn" data-item="expense">РАСХОДЫ</div>
-      <div class="button incomeBtn" data-item="income">ДОХОДЫ</div>
+      <div class="button full-width reportBtn" data-item="report">ОТЧЕТ</div>
+      <div class="half-buttons">
+        <div class="button expensesBtn" data-item="expense">РАСХОДЫ</div>
+        <div class="button incomeBtn" data-item="income">ДОХОДЫ</div>
+      </div>
     </div>
+
     <div class="wrapper">
+      <div class="itemBody " id="report">
+        <div class="itemWrapper">
+          <div class="item reportItem">
+            <div class="item__title">
+              ОТЧЕТ
+            </div>
+            <div class="period" id="period">
+              <label>С:</label>
+              <input type="date" id="reportFromDate">
+              <label>По:</label>
+              <input type="date" id="reportToDate">
+              <button id="generateReportBtn">Сформировать отчёт</button>
+            </div>
+            <div class="item__body" id="reportBody">
+              <div class="item__body-row" id="reportBodyBox">
+
+
+              </div>
+
+
+            </div>
+
+
+          </div>
+        </div>
+      </div>
       <div class="itemBody active" id="expense">
         <div class="itemWrapper">
           <div class="item">
@@ -27,26 +56,6 @@
               РАСХОДЫ
             </div>
             <div class="item__body" id="expenseBody">
-              <div class="item__body-row">
-                <div class="summ">
-
-                  <input type="number">
-                  <select name="" id="">
-                    <option value="food">Продукты</option>
-                    <option value="cofe">Кофе/Чай</option>
-                    <option value="fastfood">Перекус</option>
-                    <option value="tasty">Вкусняшки</option>
-                    <option value="gasStaion">Заправка</option>
-                    <option value="subscription">Абонплаты</option>
-                    <option value="communal">Коммуналка</option>
-                  </select>
-
-                </div>
-                <div class="notes">
-                  <input type="text">
-                </div>
-
-              </div>
 
 
             </div>
@@ -66,21 +75,7 @@
 
 
             <div class="item__body" id="incomeBody">
-              <div class="item__body-row">
-                <div class="summ">
 
-                  <input type="number">
-                  <select name="" id="">
-                    <option value="food">Основная работа</option>
-                    <option value="cofe">Подработка</option>
-                  </select>
-
-                </div>
-                <div class="notes">
-                  <input type="text">
-                </div>
-
-              </div>
 
             </div>
           </div>
@@ -94,7 +89,7 @@
 
   </main>
   <footer>
-    <p> «Где БАБАКИ?» - Трать разумно, живи комфортно!</p>
+    <p> «Где БАБКИ?» - Трать разумно, живи комфортно!</p>
   </footer>
 
   <script type="module" src="/src/main.js"></script>
