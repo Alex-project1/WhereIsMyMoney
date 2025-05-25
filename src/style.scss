@@ -75,7 +75,8 @@ q::after {
 body {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
 }
 
 header {
@@ -101,6 +102,9 @@ main {
   flex: 1; /* занимает всё свободное пространство */
   // padding: 1rem;
   background: #f0f0f0;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
 }
 
 footer {

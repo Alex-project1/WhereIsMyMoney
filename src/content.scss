@@ -1,11 +1,15 @@
 .wrapper {
-  margin-top: 25px;
+  // margin-top: 25px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 .itemBody {
   display: grid;
   grid-template-rows: 0fr;
   text-align: center;
   transition: all 0.3s;
+  height: 100%;
   &.active {
     grid-template-rows: 1fr;
   }
@@ -13,17 +17,37 @@
     overflow: hidden;
   }
   .item {
+    position: relative;
+    &::after {
+      position: absolute;
+      content: "";
+      width: 87%;
+      height: 15dvh;
+      bottom: 0;
+      left: 0;
+      margin: 0 16px 3px 22px;
+      pointer-events: none; // чтобы не мешал кликам
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0),
+        rgba(255, 255, 255, 1)
+      );
+      display: none;
+    }
+    &__title {
+      padding: 15px;
+    }
     &__body {
-      max-height: 60dvh;
       overflow-y: auto;
-      overflow-x: hidden; // Отключаем горизонтальный скролл у контейнера
+      overflow-x: hidden; // запрет горизонтального скролла
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
       border-radius: 12px;
       margin: 15px;
       padding: 15px;
+      margin-top: 0;
       background: #fefefe;
       transition: box-shadow 0.3s ease;
-      box-sizing: border-box; // важный момент
+      box-sizing: border-box;
 
       &:hover {
         box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
@@ -36,10 +60,13 @@
       border-radius: 8px;
       background: #fff;
       display: flex;
+      flex-direction: column;
       gap: 1rem;
-      align-items: center;
       transition: box-shadow 0.3s ease;
-
+      border: 2px solid #ccc;
+      & + .item__body-row {
+        margin-top: 15px;
+      }
       &:focus-within {
         box-shadow: 0 0 0 3px #007bff;
       }
@@ -48,9 +75,15 @@
         margin-top: 20px;
       }
 
-      input[type="number"] {
-        flex: 1;
-        min-width: 0; // позволяет элементу сжиматься
+      .summ {
+        display: flex;
+        gap: 1rem;
+        width: 100%;
+      }
+
+      .summ input[type="number"] {
+        flex: 1 1 auto; // занимает всё доступное пространство
+        min-width: 0; // позволяет сжиматься
         padding: 0.5rem 0.75rem;
         border: 1.5px solid #ccc;
         border-radius: 8px;
@@ -64,9 +97,8 @@
         }
       }
 
-      select {
-        flex-shrink: 0; // не даём select сжиматься ниже содержимого
-        width: 150px; // фиксируем ширину для select, чтобы не ломать дизайн
+      .summ select {
+        flex: 0 0 150px; // фиксированная ширина, не растягивается
         padding: 0.5rem 0.75rem;
         border: 1.5px solid #ccc;
         border-radius: 8px;
@@ -79,6 +111,24 @@
         &:focus {
           border-color: #007bff;
           box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+        }
+      }
+
+      .notes {
+        width: 100%;
+        input[type="text"] {
+          width: 100%;
+          padding: 0.5rem 0.75rem;
+          border: 1.5px solid #ccc;
+          border-radius: 8px;
+          font-size: 1rem;
+          transition: border-color 0.3s ease, box-shadow 0.3s ease;
+          outline: none;
+
+          &:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+          }
         }
       }
     }
