@@ -5,6 +5,10 @@ const footer = document.querySelector("footer");
 const buttons = document.getElementById("buttons");
 const itemTitle = document.querySelector(".item__title");
 const itemBody = document.querySelectorAll(".item__body");
+const addExpense = document.getElementById("addExpense");
+const expenseBody = document.getElementById("expenseBody");
+const addIncome = document.getElementById("addIncome");
+const incomeBody = document.getElementById("incomeBody");
 
 const bodyHeight = body.getBoundingClientRect().height;
 const headerHeight = header.getBoundingClientRect().height;
@@ -35,8 +39,7 @@ buttons.addEventListener("click", (e) => {
 });
 
 // ----------------------------------
-const addExpense = document.getElementById("addExpense");
-const expenseBody = document.getElementById("expenseBody");
+
 addExpense.addEventListener("click", () => {
   const item = `
   <div class="item__body-row">
@@ -60,4 +63,23 @@ addExpense.addEventListener("click", () => {
 
               </div>`;
   expenseBody.insertAdjacentHTML("afterbegin", item);
+});
+addIncome.addEventListener("click", () => {
+  const item = `
+  <div class="item__body-row">
+                <div class="summ">
+
+                  <input type="number">
+                  <select name="" id="">
+                    <option value="food">Основная работа</option>
+                    <option value="cofe">Подработка</option>
+                  </select>
+
+                </div>
+                <div class="notes">
+                  <input type="text">
+                </div>
+
+              </div>`;
+  incomeBody.insertAdjacentHTML("afterbegin", item);
 });
