@@ -63,6 +63,10 @@ addExpense.addEventListener("click", () => {
 
               </div>`;
   expenseBody.insertAdjacentHTML("afterbegin", item);
+  expenseBody.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
 });
 addIncome.addEventListener("click", () => {
   const item = `
@@ -82,4 +86,8 @@ addIncome.addEventListener("click", () => {
 
               </div>`;
   incomeBody.insertAdjacentHTML("afterbegin", item);
+  incomeBody.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
 });
