@@ -4,7 +4,7 @@ const body = document.querySelector("body");
 const footer = document.querySelector("footer");
 const buttons = document.getElementById("buttons");
 const itemTitle = document.querySelector(".item__title");
-const itemBody = document.querySelector(".item__body");
+const itemBody = document.querySelectorAll(".item__body");
 
 const bodyHeight = body.getBoundingClientRect().height;
 const headerHeight = header.getBoundingClientRect().height;
@@ -15,7 +15,7 @@ let itemBodyHeight =
   bodyHeight -
   (headerHeight + footerHeight + itemTitleHeight + buttonsHeight) -
   100;
-itemBody.style.maxHeight = itemBodyHeight + "px";
+itemBody.forEach((item) => (item.style.maxHeight = itemBodyHeight + "px"));
 // ------------------------------------------------------
 const itemBodyes = document.querySelectorAll(".itemBody");
 function hideItems() {
@@ -32,4 +32,32 @@ buttons.addEventListener("click", (e) => {
     } else {
     }
   }
+});
+
+// ----------------------------------
+const addExpense = document.getElementById("addExpense");
+const expenseBody = document.getElementById("expenseBody");
+addExpense.addEventListener("click", () => {
+  const item = `
+  <div class="item__body-row">
+                <div class="summ">
+
+                  <input type="number">
+                  <select name="" id="">
+                    <option value="food">Продукты</option>
+                    <option value="cofe">Кофе/Чай</option>
+                    <option value="fastfood">Перекус</option>
+                    <option value="tasty">Вкусняшки</option>
+                    <option value="gasStaion">Заправка</option>
+                    <option value="subscription">Абонплаты</option>
+                    <option value="communal">Коммуналка</option>
+                  </select>
+
+                </div>
+                <div class="notes">
+                  <input type="text">
+                </div>
+
+              </div>`;
+  expenseBody.insertAdjacentHTML("afterbegin", item);
 });
