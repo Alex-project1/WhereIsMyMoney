@@ -374,9 +374,11 @@ function generateRecommendation(totalIncomes, totalExpenses, balance, categoryPe
 
   for (const [category, percent] of Object.entries(categoryPercents)) {
     if (percent > 50) {
-      recommendation += `🔎 Расходы по категории <strong>${category}</strong> составляют ${percent}%. Подумайте, можно ли здесь сэкономить.<br>`;
+      const displayName = categoryNames[category] || category;
+      recommendation += `🔎 Расходы по категории <strong>${displayName}</strong> составляют ${percent}%. Подумайте, можно ли здесь сэкономить.<br>`;
     }
   }
 
   return recommendation || "🎯 Финансовая ситуация стабильна. Продолжайте в том же духе!";
 }
+
