@@ -57,7 +57,7 @@
       transition: box-shadow 0.3s ease;
       border: 2px solid #ccc;
       position: relative;
-     
+
       line-height: 1.6;
       opacity: 0;
       transform: translateY(20px);
@@ -81,6 +81,26 @@
         display: flex;
         gap: 1rem;
         width: 100%;
+        padding-top: 13px;
+        position: relative;
+        &::after {
+          position: absolute;
+          content: "Куда:";
+          font-size: 12px;
+          line-height: 1;
+          top: -1px;
+          right: 40%;
+          color: #000;
+        }
+        &::before {
+          position: absolute;
+          content: "Сколько:";
+          font-size: 12px;
+          line-height: 1;
+          top: -1px;
+          left: 0;
+          color: #000;
+        }
       }
 
       .summ input[type="number"] {
@@ -118,6 +138,17 @@
 
       .notes {
         width: 100%;
+        position: relative;
+        padding-top: 13px;
+        &::before {
+          position: absolute;
+          content: "Прмечание:";
+          font-size: 12px;
+          line-height: 1;
+          top: -1px;
+          left: 0;
+          color: #000;
+        }
         input[type="text"] {
           width: 100%;
           padding: 0.5rem 0.75rem;
@@ -190,30 +221,28 @@
 }
 
 .period button {
-  display: flex
-  ;
-      justify-content: center;
-      align-items: center;
-      padding: 12px 16px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      color: #fff;
-      text-transform: uppercase;
-      font-weight: 600;
-      font-size: 16px;
-      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
-      box-shadow: 0px 0px 5px #ccc;
-      transition: transform 0.1s ease, box-shadow 0.3s ease, filter 0.3s ease;
-      user-select: none;
-      background: linear-gradient(to bottom, #3b82f6, #2563eb);
-      width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 16px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+  box-shadow: 0px 0px 5px #ccc;
+  transition: transform 0.1s ease, box-shadow 0.3s ease, filter 0.3s ease;
+  user-select: none;
+  background: linear-gradient(to bottom, #3b82f6, #2563eb);
+  width: 100%;
 }
 
 .period button:hover {
   background-color: #2563eb; /* Синий — потемнее при наведении */
 }
-
 
 .item__body-row h3,
 .item__body-row h4 {
@@ -244,7 +273,7 @@
   color: #111827;
 }
 
-ul{
+ul {
   text-align: left;
 }
 .delete-btn {
@@ -298,4 +327,14 @@ ul{
       background-color: #b71c1c;
     }
   }
+}
+#income {
+  .summ::after {
+    content: "Источник:";
+    right: 30%;
+  }
+}
+.periodReport {
+  font-style: italic;
+  text-decoration: underline;
 }

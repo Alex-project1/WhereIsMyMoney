@@ -331,7 +331,7 @@ function generateReport(fromDate, toDate) {
   );
   const balance = totalIncomes - totalExpenses;
   const profitPercent =
-    totalIncomes === 0 ? 0 : ((balance / totalIncomes) * 100).toFixed(2);
+    totalIncomes === 0 ? "-100 " : ((balance / totalIncomes) * 100).toFixed(2);
 
   // Расходы по категориям
   const categorySums = {};
@@ -385,9 +385,21 @@ function generateReport(fromDate, toDate) {
   )}%)</li>
     </ul>
   `;
+  function formatShortDate(dateStr) {
+    const [year, month, day] = dateStr.split("-");
+    return `${day}.${month}.${year.slice(2)}`; // 26.05.25
+  }
+
+  const formattedFromDate = formatShortDate(fromDate);
+  const formattedToDate = toDate ? formatShortDate(toDate) : "";
+
+  const periodHTML = `<p class="periodReport">( ${formattedFromDate}${
+    formattedToDate ? ` - ${formattedToDate}` : ""
+  } )</p>`;
 
   const reportHTML = `
     <h3>📊 Отчёт</h3>
+    ${periodHTML}
     <p><strong>Доходы:</strong> ${totalIncomes.toFixed(2)} грн</p>
     ${incomeCategoryDetails}
     <p><strong>Расходы:</strong> ${totalExpenses.toFixed(2)} грн</p>
