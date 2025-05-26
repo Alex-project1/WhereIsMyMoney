@@ -15,6 +15,22 @@ const headerHeight = header.getBoundingClientRect().height;
 const footerHeight = footer.getBoundingClientRect().height;
 const itemTitleHeight = itemTitle.getBoundingClientRect().height;
 const buttonsHeight = buttons.getBoundingClientRect().height;
+const categoryNames = {
+  food: "Продукты",
+  cofe: "Кофе/Чай",
+  fastfood: "Перекус",
+  tasty: "Вкусняшки",
+  cafe: "Кафе",
+  gasStaion: "Заправка",
+  household: "Быт. химия",
+  mother: "Маме",
+  subscription: "Абонплаты",
+  communal: "Коммуналка",
+  others: "Другое",
+  main: "Основная работа",
+  additional: "Подработка"
+};
+
 let itemBodyHeight =
   bodyHeight -
   (headerHeight + footerHeight + itemTitleHeight + buttonsHeight) -
@@ -297,8 +313,10 @@ function generateReport(fromDate, toDate) {
   }
 
   const categoryReport = Object.entries(categorySums).map(([cat, sum]) => {
-    return `<li>${cat}: ${sum.toFixed(2)} грн (${categoryPercents[cat]}%)</li>`;
+    const displayName = categoryNames[cat] || cat; // fallback на raw значение
+    return `<li>${displayName}: ${sum.toFixed(2)} грн (${categoryPercents[cat]}%)</li>`;
   }).join("");
+  
 
   // Доходы по категориям
   const incomeCategorySums = {
