@@ -9,7 +9,10 @@ const addExpense = document.getElementById("addExpense");
 const expenseBody = document.getElementById("expenseBody");
 const addIncome = document.getElementById("addIncome");
 const incomeBody = document.getElementById("incomeBody");
+const period = document.getElementById("period");
+const reportBody = document.getElementById("reportBody");
 
+const periodHeight = period.getBoundingClientRect().height;
 const bodyHeight = body.getBoundingClientRect().height;
 const headerHeight = header.getBoundingClientRect().height;
 const footerHeight = footer.getBoundingClientRect().height;
@@ -20,6 +23,7 @@ let itemBodyHeight =
   (headerHeight + footerHeight + itemTitleHeight + buttonsHeight) -
   100;
 itemBody.forEach((item) => (item.style.maxHeight = itemBodyHeight + "px"));
+reportBody.style.maxHeight = itemBodyHeight - periodHeight + 30  + "px";
 // ------------------------------------------------------
 const itemBodyes = document.querySelectorAll(".itemBody");
 function hideItems() {
@@ -177,3 +181,88 @@ function updateItem(id, container, field, value) {
 }
 // localStorage.clear();
 // Сохранение в локалсторейдж, вывод из локал сторейдж нконец
+document.getElementById("generateReportBtn").addEventListener("click", generateReport);
+
+function generateReport() {
+  const fromDate = document.getElementById("reportFromDate").value;
+  const toDate = document.getElementById("reportToDate").value;
+  const { expenses, incomes } = getDataFromStorage();
+
+  const parseDate = (str) => {
+    const [day, month, year] = str.split(".");
+    return new Date(`${year}-${month}-${day}`);
+  };
+
+  const isInRange = (itemDateArr) => {
+    const date = parseDate(itemDateArr[0]);
+    if (!fromDate && !toDate) return true;
+    if (fromDate && date < new Date(fromDate)) return false;
+    if (toDate && date > new Date(toDate)) return false;
+    return true;
+  };
+
+  const filteredExpenses = expenses.filter(e => isInRange(e.date));
+  const filteredIncomes = incomes.filter(i => isInRange(i.date));
+
+  const totalExpenses = filteredExpenses.reduce((sum, e) => sum + (parseFloat(e.amount) || 0), 0);
+  const totalIncomes = filteredIncomes.reduce((sum, i) => sum + (parseFloat(i.amount) || 0), 0);
+  const balance = totalIncomes - totalExpenses;
+  const profitPercent = totalIncomes === 0 ? 0 : ((balance / totalIncomes) * 100).toFixed(2);
+
+  // Расходы по категориям
+  const categorySums = {};
+  filteredExpenses.forEach(e => {
+    const val = parseFloat(e.amount) || 0;
+    if (!categorySums[e.category]) categorySums[e.category] = 0;
+    categorySums[e.category] += val;
+  });
+
+  // Категории в %
+  const categoryPercents = {};
+  for (const [cat, sum] of Object.entries(categorySums)) {
+    categoryPercents[cat] = ((sum / totalExpenses) * 100).toFixed(2);
+  }
+
+  const categoryReport = Object.entries(categorySums).map(([cat, sum]) => {
+    return `<li>${cat}: ${sum.toFixed(2)} (${categoryPercents[cat]}%)</li>`;
+  }).join("");
+
+  const reportHTML = `
+    <h3>📊 Отчёт</h3>
+    <p><strong>Доходы:</strong> ${totalIncomes.toFixed(2)} грн</p>
+    <p><strong>Расходы:</strong> ${totalExpenses.toFixed(2)} грн</p>
+    <p><strong>Баланс:</strong> ${balance.toFixed(2)} грн</p>
+    <p><strong>Процент прибыли/убытка:</strong> ${profitPercent}%</p>
+    <h4>📌 Расходы по категориям:</h4>
+    <ul>${categoryReport}</ul>
+  `;
+
+  document.getElementById("reportBodyBox").innerHTML = reportHTML;
+  const recommendationHTML = `
+  <h4>📢 Рекомендации:</h4>
+  <p>${generateRecommendation(totalIncomes, totalExpenses, balance, categoryPercents)}</p>
+`;
+
+document.getElementById("reportBodyBox").innerHTML = reportHTML + recommendationHTML;
+
+}
+function generateRecommendation(totalIncomes, totalExpenses, balance, categoryPercents) {
+  let recommendation = "";
+
+  if (totalIncomes === 0) {
+    recommendation += "💡 У вас нет доходов за выбранный период. Рекомендуем найти источник дохода или подработку.<br>";
+  } else if (balance < 0) {
+    recommendation += "⚠️ Ваши расходы превышают доходы. Постарайтесь оптимизировать траты.<br>";
+  } else if (balance > 0 && (totalExpenses / totalIncomes) < 0.7) {
+    recommendation += "✅ Отличный результат! Вы тратите меньше 70% от доходов. Рекомендуем часть средств инвестировать или отложить.<br>";
+  }
+
+  for (const [category, percent] of Object.entries(categoryPercents)) {
+    if (percent > 50) {
+      recommendation += `🔎 Расходы по категории <strong>${category}</strong> составляют ${percent}%. Подумайте, можно ли здесь сэкономить.<br>`;
+    }
+  }
+
+  return recommendation || "🎯 Финансовая ситуация стабильна. Продолжайте в том же духе!";
+}
+// localStorage.clear()
