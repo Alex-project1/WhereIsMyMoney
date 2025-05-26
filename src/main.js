@@ -137,6 +137,7 @@ function renderItem(item, container, prepend = true) {
   row.dataset.id = item.id;
 
   row.innerHTML = `
+
     <div class="time">
       <div class="time__date">${item.date[0]}</div>
       <div class="time__time">${item.date[1]}</div>
@@ -169,6 +170,7 @@ function renderItem(item, container, prepend = true) {
     <button class="delete-btn">   <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
     <path d="M3 6h18M8 6v12M16 6v12M5 6l1 14a2 2 0 002 2h8a2 2 0 002-2l1-14" />
   </svg> Удалить</button>
+
   `;
 
   const amountInput = row.querySelector('input[type="number"]');
@@ -192,6 +194,11 @@ function renderItem(item, container, prepend = true) {
   } else {
     container.appendChild(row);
   }
+  requestAnimationFrame(() => {
+    row.classList.add("show");
+  });
+
+
 }
 //  удалить елемент начало
 document.addEventListener('click', (e) => {
