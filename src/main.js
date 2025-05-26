@@ -65,7 +65,8 @@ buttons.addEventListener("click", (e) => {
 // Сохранение в локалсторейдж, вывод из локал сторейдж начало
 document.addEventListener("DOMContentLoaded", () => {
   const data = getDataFromStorage();
-  const tenDaysAgo = getDateDaysAgo(10);
+  const tenDaysAgo = getDateDaysAgo(0);
+  console.log("tenDaysAgo:", tenDaysAgo);
 
   // Фильтрация данных за последние 10 дней
   const filteredExpenses = data.expenses.filter((e) =>
