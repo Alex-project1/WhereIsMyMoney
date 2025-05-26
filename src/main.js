@@ -15,12 +15,19 @@ const headerHeight = header.getBoundingClientRect().height;
 const footerHeight = footer.getBoundingClientRect().height;
 const itemTitleHeight = itemTitle.getBoundingClientRect().height;
 const buttonsHeight = buttons.getBoundingClientRect().height;
+
 const categoryNames = {
   food: "Продукты",
+  meet: "Мясо",
+  sausages: "Колбасные",
+  dairy: "Молочка",
+  vegetables: "Овощи",
+  alcohol: "Алкоголь",
   cofe: "Кофе/Чай",
   fastfood: "Перекус",
   tasty: "Вкусняшки",
   cafe: "Кафе",
+  auto: "Авто",
   gasStaion: "Заправка",
   household: "Быт. химия",
   mother: "Маме",
@@ -28,7 +35,7 @@ const categoryNames = {
   communal: "Коммуналка",
   others: "Другое",
   main: "Основная работа",
-  additional: "Подработка"
+  additional: "Подработка",
 };
 
 let itemBodyHeight =
@@ -61,8 +68,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const tenDaysAgo = getDateDaysAgo(10);
 
   // Фильтрация данных за последние 10 дней
-  const filteredExpenses = data.expenses.filter(e => isDateInRange(e.date[0], tenDaysAgo, null));
-  const filteredIncomes = data.incomes.filter(i => isDateInRange(i.date[0], tenDaysAgo, null));
+  const filteredExpenses = data.expenses.filter((e) =>
+    isDateInRange(e.date[0], tenDaysAgo, null)
+  );
+  const filteredIncomes = data.incomes.filter((i) =>
+    isDateInRange(i.date[0], tenDaysAgo, null)
+  );
 
   // Рендерим элементы за последние 10 дней
   filteredExpenses.forEach((item) => renderItem(item, expenseBody, false));
@@ -98,8 +109,8 @@ function isDateInRange(itemDateStr, fromDateStr, toDateStr) {
 
 function getDataFromStorage() {
   const data = localStorage.getItem("financeData");
-  console.log('JSON.parse(data) ',JSON.parse(data) );
-  
+  console.log("JSON.parse(data) ", JSON.parse(data));
+
   return data ? JSON.parse(data) : { expenses: [], incomes: [] };
 }
 
@@ -164,10 +175,16 @@ function renderItem(item, container, prepend = true) {
         ${
           container === expenseBody
             ? `<option value="food">Продукты</option>
+              <option value="meet">Мясо</option>
+              <option value="sausages">Колбасные</option>
+              <option value="dairy">Молочка</option>
+              <option value="vegetables">Овощи</option>
+              <option value="alcohol">Алкоголь</option>
               <option value="cofe">Кофе/Чай</option>
               <option value="fastfood">Перекус</option>
               <option value="tasty">Вкусняшки</option>
               <option value="cafe">Кафе</option>
+              <option value="auto">Авто</option>
               <option value="gasStaion">Заправка</option>
               <option value="household">Быт. химия</option>
               <option value="mother">Маме</option>
@@ -213,46 +230,47 @@ function renderItem(item, container, prepend = true) {
   requestAnimationFrame(() => {
     row.classList.add("show");
   });
-
-
 }
 //  удалить елемент начало
-document.addEventListener('click', (e) => {
-  if (e.target.classList.contains('delete-btn')) {
-    const row = e.target.closest('.item__body-row');
-    const id = row.getAttribute('data-id');
+document.addEventListener("click", (e) => {
+  if (e.target.classList.contains("delete-btn")) {
+    const row = e.target.closest(".item__body-row");
+    const id = row.getAttribute("data-id");
 
     // Добавляем класс с анимацией
-    row.classList.add('remove-anim');
+    row.classList.add("remove-anim");
 
     // Ждём окончания анимации, затем удаляем
-    row.addEventListener('animationend', () => {
-      row.remove();
+    row.addEventListener(
+      "animationend",
+      () => {
+        row.remove();
 
-      // Получить данные из localStorage
-      const data = JSON.parse(localStorage.getItem('financeData')) || {
-        expenses: [],
-        incomes: []
-      };
+        // Получить данные из localStorage
+        const data = JSON.parse(localStorage.getItem("financeData")) || {
+          expenses: [],
+          incomes: [],
+        };
 
-      // Определить, это доход или расход
-      const isExpense = id.startsWith('exp_');
-      const isIncome = id.startsWith('inc_');
+        // Определить, это доход или расход
+        const isExpense = id.startsWith("exp_");
+        const isIncome = id.startsWith("inc_");
 
-      if (isExpense) {
-        data.expenses = data.expenses.filter(item => item.id !== id);
-      } else if (isIncome) {
-        data.incomes = data.incomes.filter(item => item.id !== id);
-      }
+        if (isExpense) {
+          data.expenses = data.expenses.filter((item) => item.id !== id);
+        } else if (isIncome) {
+          data.incomes = data.incomes.filter((item) => item.id !== id);
+        }
 
-      // Сохранить обновлённые данные
-      localStorage.setItem('financeData', JSON.stringify(data));
+        // Сохранить обновлённые данные
+        localStorage.setItem("financeData", JSON.stringify(data));
 
-      // (опционально) пересчитать баланс и обновить отчёт
-    }, { once: true }); // { once: true } — слушатель сработает один раз
+        // (опционально) пересчитать баланс и обновить отчёт
+      },
+      { once: true }
+    ); // { once: true } — слушатель сработает один раз
   }
 });
-
 
 // localStorage.clear()
 //  удалить елемент конец
@@ -278,11 +296,15 @@ document.getElementById("generateReportBtn").addEventListener("click", () => {
 
   const data = getDataFromStorage();
 
-  const filteredExpenses = data.expenses.filter(e => isDateInRange(e.date[0], fromDate, toDate));
-  const filteredIncomes = data.incomes.filter(i => isDateInRange(i.date[0], fromDate, toDate));
+  const filteredExpenses = data.expenses.filter((e) =>
+    isDateInRange(e.date[0], fromDate, toDate)
+  );
+  const filteredIncomes = data.incomes.filter((i) =>
+    isDateInRange(i.date[0], fromDate, toDate)
+  );
 
-  filteredExpenses.forEach(item => renderItem(item, expenseBody, false));
-  filteredIncomes.forEach(item => renderItem(item, incomeBody, false));
+  filteredExpenses.forEach((item) => renderItem(item, expenseBody, false));
+  filteredIncomes.forEach((item) => renderItem(item, incomeBody, false));
 
   generateReport(fromDate, toDate);
 });
@@ -291,17 +313,28 @@ document.getElementById("generateReportBtn").addEventListener("click", () => {
 function generateReport(fromDate, toDate) {
   const { expenses, incomes } = getDataFromStorage();
 
-  const filteredExpenses = expenses.filter(e => isDateInRange(e.date[0], fromDate, toDate));
-  const filteredIncomes = incomes.filter(i => isDateInRange(i.date[0], fromDate, toDate));
+  const filteredExpenses = expenses.filter((e) =>
+    isDateInRange(e.date[0], fromDate, toDate)
+  );
+  const filteredIncomes = incomes.filter((i) =>
+    isDateInRange(i.date[0], fromDate, toDate)
+  );
 
-  const totalExpenses = filteredExpenses.reduce((sum, e) => sum + (parseFloat(e.amount) || 0), 0);
-  const totalIncomes = filteredIncomes.reduce((sum, i) => sum + (parseFloat(i.amount) || 0), 0);
+  const totalExpenses = filteredExpenses.reduce(
+    (sum, e) => sum + (parseFloat(e.amount) || 0),
+    0
+  );
+  const totalIncomes = filteredIncomes.reduce(
+    (sum, i) => sum + (parseFloat(i.amount) || 0),
+    0
+  );
   const balance = totalIncomes - totalExpenses;
-  const profitPercent = totalIncomes === 0 ? 0 : ((balance / totalIncomes) * 100).toFixed(2);
+  const profitPercent =
+    totalIncomes === 0 ? 0 : ((balance / totalIncomes) * 100).toFixed(2);
 
   // Расходы по категориям
   const categorySums = {};
-  filteredExpenses.forEach(e => {
+  filteredExpenses.forEach((e) => {
     const val = parseFloat(e.amount) || 0;
     if (!categorySums[e.category]) categorySums[e.category] = 0;
     categorySums[e.category] += val;
@@ -312,20 +345,23 @@ function generateReport(fromDate, toDate) {
     categoryPercents[cat] = ((sum / totalExpenses) * 100).toFixed(2);
   }
 
-  const categoryReport = Object.entries(categorySums).map(([cat, sum]) => {
-    const displayName = categoryNames[cat] || cat; // fallback на raw значение
-    return `<li>${displayName}: ${sum.toFixed(2)} грн (${categoryPercents[cat]}%)</li>`;
-  }).join("");
-  
+  const categoryReport = Object.entries(categorySums)
+    .map(([cat, sum]) => {
+      const displayName = categoryNames[cat] || cat; // fallback на raw значение
+      return `<li>${displayName}: ${sum.toFixed(2)} грн (${
+        categoryPercents[cat]
+      }%)</li>`;
+    })
+    .join("");
 
   // Доходы по категориям
   const incomeCategorySums = {
-    main: 0,        // Основной доход
-    additional: 0,  // Подработка
-    others: 0       // Другое
+    main: 0, // Основной доход
+    additional: 0, // Подработка
+    others: 0, // Другое
   };
 
-  filteredIncomes.forEach(i => {
+  filteredIncomes.forEach((i) => {
     const val = parseFloat(i.amount) || 0;
     if (incomeCategorySums.hasOwnProperty(i.category)) {
       incomeCategorySums[i.category] += val;
@@ -337,9 +373,15 @@ function generateReport(fromDate, toDate) {
 
   const incomeCategoryDetails = `
     <ul>
-      <li>Основной — ${incomeCategorySums.main.toFixed(2)} грн (${getPercent(incomeCategorySums.main)}%)</li>
-      <li>Подработка — ${incomeCategorySums.additional.toFixed(2)} грн (${getPercent(incomeCategorySums.additional)}%)</li>
-      <li>Другое — ${incomeCategorySums.others.toFixed(2)} грн (${getPercent(incomeCategorySums.others)}%)</li>
+      <li>Основной — ${incomeCategorySums.main.toFixed(2)} грн (${getPercent(
+    incomeCategorySums.main
+  )}%)</li>
+      <li>Подработка — ${incomeCategorySums.additional.toFixed(
+        2
+      )} грн (${getPercent(incomeCategorySums.additional)}%)</li>
+      <li>Другое — ${incomeCategorySums.others.toFixed(2)} грн (${getPercent(
+    incomeCategorySums.others
+  )}%)</li>
     </ul>
   `;
 
@@ -355,21 +397,35 @@ function generateReport(fromDate, toDate) {
 
   const recommendationHTML = `
     <h4>📢 Рекомендации:</h4>
-    <p>${generateRecommendation(totalIncomes, totalExpenses, balance, categoryPercents)}</p>
+    <p>${generateRecommendation(
+      totalIncomes,
+      totalExpenses,
+      balance,
+      categoryPercents
+    )}</p>
   `;
 
-  document.getElementById("reportBodyBox").innerHTML = reportHTML + recommendationHTML;
+  document.getElementById("reportBodyBox").innerHTML =
+    reportHTML + recommendationHTML;
 }
 
-function generateRecommendation(totalIncomes, totalExpenses, balance, categoryPercents) {
+function generateRecommendation(
+  totalIncomes,
+  totalExpenses,
+  balance,
+  categoryPercents
+) {
   let recommendation = "";
 
   if (totalIncomes === 0) {
-    recommendation += "💡 У вас нет доходов за выбранный период. Рекомендуем найти источник дохода или подработку.<br>";
+    recommendation +=
+      "💡 У вас нет доходов за выбранный период. Рекомендуем найти источник дохода или подработку.<br>";
   } else if (balance < 0) {
-    recommendation += "⚠️ Ваши расходы превышают доходы. Постарайтесь оптимизировать траты.<br>";
-  } else if (balance > 0 && (totalExpenses / totalIncomes) < 0.7) {
-    recommendation += "✅ Отличный результат! Вы тратите меньше 70% от доходов. Рекомендуем часть средств инвестировать или отложить.<br>";
+    recommendation +=
+      "⚠️ Ваши расходы превышают доходы. Постарайтесь оптимизировать траты.<br>";
+  } else if (balance > 0 && totalExpenses / totalIncomes < 0.7) {
+    recommendation +=
+      "✅ Отличный результат! Вы тратите меньше 70% от доходов. Рекомендуем часть средств инвестировать или отложить.<br>";
   }
 
   for (const [category, percent] of Object.entries(categoryPercents)) {
@@ -379,6 +435,8 @@ function generateRecommendation(totalIncomes, totalExpenses, balance, categoryPe
     }
   }
 
-  return recommendation || "🎯 Финансовая ситуация стабильна. Продолжайте в том же духе!";
+  return (
+    recommendation ||
+    "🎯 Финансовая ситуация стабильна. Продолжайте в том же духе!"
+  );
 }
-
