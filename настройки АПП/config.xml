@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="MoneyTreck" xmlns="http://www.w3.org/ns/widgets" version="1.0.0">
+  <name>Where Is My Money</name>
+  <description>My Project is an app.</description>
+  <plugin name="cordova-plugin-device" />
+  <plugin name="cordova-plugin-inappbrowser" />
+  <access origin="*" />
+ 
+  <!-- Указываем иконку для Android -->
+  <platform name="android">
+      <icon density="ldpi" src="/logo.png" />
+      <icon density="mdpi" src="/logo.png" />
+      <icon density="hdpi" src="/logo.png" />
+      <icon density="xhdpi" src="/logo.png" />
+      <icon density="xxhdpi" src="/logo.png" />
+      <icon density="xxxhdpi" src="/logo.png" />
+  </platform>
+</widget>

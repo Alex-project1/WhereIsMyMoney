@@ -199,31 +199,37 @@ document.addEventListener('click', (e) => {
     const row = e.target.closest('.item__body-row');
     const id = row.getAttribute('data-id');
 
-    // Удалить строку из DOM
-    row.remove();
+    // Добавляем класс с анимацией
+    row.classList.add('remove-anim');
 
-    // Получить данные из localStorage
-    const data = JSON.parse(localStorage.getItem('financeData')) || {
-      expenses: [],
-      incomes: []
-    };
+    // Ждём окончания анимации, затем удаляем
+    row.addEventListener('animationend', () => {
+      row.remove();
 
-    // Определить, это доход или расход
-    const isExpense = id.startsWith('exp_');
-    const isIncome = id.startsWith('inc_');
+      // Получить данные из localStorage
+      const data = JSON.parse(localStorage.getItem('financeData')) || {
+        expenses: [],
+        incomes: []
+      };
 
-    if (isExpense) {
-      data.expenses = data.expenses.filter(item => item.id !== id);
-    } else if (isIncome) {
-      data.incomes = data.incomes.filter(item => item.id !== id);
-    }
+      // Определить, это доход или расход
+      const isExpense = id.startsWith('exp_');
+      const isIncome = id.startsWith('inc_');
 
-    // Сохранить обновлённые данные
-    localStorage.setItem('financeData', JSON.stringify(data));
+      if (isExpense) {
+        data.expenses = data.expenses.filter(item => item.id !== id);
+      } else if (isIncome) {
+        data.incomes = data.incomes.filter(item => item.id !== id);
+      }
 
-    // (опционально) пересчитать баланс и обновить отчёт
+      // Сохранить обновлённые данные
+      localStorage.setItem('financeData', JSON.stringify(data));
+
+      // (опционально) пересчитать баланс и обновить отчёт
+    }, { once: true }); // { once: true } — слушатель сработает один раз
   }
 });
+
 
 // localStorage.clear()
 //  удалить елемент конец
