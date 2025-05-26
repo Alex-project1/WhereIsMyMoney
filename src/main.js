@@ -283,6 +283,7 @@ function generateReport(fromDate, toDate) {
   const balance = totalIncomes - totalExpenses;
   const profitPercent = totalIncomes === 0 ? 0 : ((balance / totalIncomes) * 100).toFixed(2);
 
+  // Расходы по категориям
   const categorySums = {};
   filteredExpenses.forEach(e => {
     const val = parseFloat(e.amount) || 0;
@@ -298,10 +299,12 @@ function generateReport(fromDate, toDate) {
   const categoryReport = Object.entries(categorySums).map(([cat, sum]) => {
     return `<li>${cat}: ${sum.toFixed(2)} грн (${categoryPercents[cat]}%)</li>`;
   }).join("");
+
+  // Доходы по категориям
   const incomeCategorySums = {
-    food: 0,         // Основной доход
-    cofe: 0,         // Подработка
-    others: 0        // Другое
+    main: 0,        // Основной доход
+    additional: 0,  // Подработка
+    others: 0       // Другое
   };
 
   filteredIncomes.forEach(i => {
@@ -312,26 +315,24 @@ function generateReport(fromDate, toDate) {
   });
 
   const getPercent = (value) =>
-  totalIncomes > 0 ? ((value / totalIncomes) * 100).toFixed(1) : "0.0";
+    totalIncomes > 0 ? ((value / totalIncomes) * 100).toFixed(1) : "0.0";
 
-const incomeCategoryDetails = `
-  <ul>
-    <li>Основной — ${incomeCategorySums.food.toFixed(2)} грн (${getPercent(incomeCategorySums.food)}%)</li>
-    <li>Дополнительный — ${incomeCategorySums.cofe.toFixed(2)} грн (${getPercent(incomeCategorySums.cofe)}%)</li>
-    <li>Другой — ${incomeCategorySums.others.toFixed(2)} грн (${getPercent(incomeCategorySums.others)}%)</li>
-  </ul>
-`;
+  const incomeCategoryDetails = `
+    <ul>
+      <li>Основной — ${incomeCategorySums.main.toFixed(2)} грн (${getPercent(incomeCategorySums.main)}%)</li>
+      <li>Подработка — ${incomeCategorySums.additional.toFixed(2)} грн (${getPercent(incomeCategorySums.additional)}%)</li>
+      <li>Другое — ${incomeCategorySums.others.toFixed(2)} грн (${getPercent(incomeCategorySums.others)}%)</li>
+    </ul>
+  `;
 
   const reportHTML = `
     <h3>📊 Отчёт</h3>
     <p><strong>Доходы:</strong> ${totalIncomes.toFixed(2)} грн</p>
     ${incomeCategoryDetails}
     <p><strong>Расходы:</strong> ${totalExpenses.toFixed(2)} грн</p>
-    
     <ul>${categoryReport}</ul>
     <p><strong>Баланс:</strong> ${balance.toFixed(2)} грн</p>
     <p><strong>Процент прибыли/убытка:</strong> ${profitPercent}%</p>
-
   `;
 
   const recommendationHTML = `
