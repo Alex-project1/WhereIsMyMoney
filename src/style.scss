@@ -101,15 +101,18 @@ header {
 main {
   flex: 1; /* занимает всё свободное пространство */
   // padding: 1rem;
-  background: #f0f0f0;
+  // background: #f0f0f0;
+  background: linear-gradient(to bottom right, #fefcea, #f1f2f6);
   padding: 10px;
   display: flex;
   flex-direction: column;
 }
 
 footer {
-  background: #222;
-  color: white;
+  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+  color: #ffffff;
+  background: linear-gradient(90deg, #2b2b2b 0%, #3d3d3d 100%);
+  color: #ddd;
   padding: 1rem;
   text-align: center;
 }
@@ -119,4 +122,75 @@ footer {
   width: 100%;
   padding: 10px;
   margin: 0 auto;
+}
+.preload {
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  background: linear-gradient(135deg, #1f1f1f, #2c2c2c);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+  gap: 20px;
+  animation: fadeOut 1s ease-out 3.5s forwards;
+  pointer-events: none;
+
+  .preload__top-text,
+  .preload__bottom-text {
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
+    font-weight: 700;
+    opacity: 0;
+    animation: fadeIn 0.6s ease-in-out forwards;
+  }
+
+  .preload__top-text {
+    animation-delay: 0.3s;
+  }
+
+  .preload__bottom-text {
+    animation-delay: 1.5s;
+  }
+
+  .preload__spinner img {
+    width: clamp(150px, 40vw, 300px);
+    animation: spinPulse 2s infinite ease-in-out;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.4));
+  }
+}
+
+// Animation: rotate + pulse
+@keyframes spinPulse {
+  0% {
+    transform: scale(0.95) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.05) rotate(180deg);
+  }
+  100% {
+    transform: scale(0.95) rotate(360deg);
+  }
+}
+
+// Text fade in
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+// Preloader fade out (optional)
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
 }

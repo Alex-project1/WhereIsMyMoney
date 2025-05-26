@@ -3,12 +3,20 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <link rel="icon" type="image/png" href="/logo.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vite App</title>
+  <title>Where Is My Money</title>
 </head>
 
 <body>
+  <div class="preload">
+    <div class="preload__top-text">Where Is My Money</div>
+    <div class="preload__spinner">
+      <img src="./public/preload.png" alt="Loading">
+    </div>
+    <div class="preload__bottom-text">Где БАБКИ ???</div>
+  </div>
+  
   <header>
     <h1>Где БАБКИ ???</h1>
   </header>
@@ -20,21 +28,23 @@
         <div class="button expensesBtn" data-item="expense">РАСХОДЫ</div>
         <div class="button incomeBtn" data-item="income">ДОХОДЫ</div>
       </div>
+      <div class="period" id="period">
+        <label for="reportFromDate">С:</label>
+        <input type="date" id="reportFromDate">
+        <label for="reportToDate">По:</label>
+        <input type="date" id="reportToDate">
+        <button id="generateReportBtn">Выбрать период</button>
+      </div>
     </div>
 
     <div class="wrapper">
       <div class="itemBody " id="report">
         <div class="itemWrapper">
           <div class="item reportItem">
+           
+        
             <div class="item__title">
               ОТЧЕТ
-            </div>
-            <div class="period" id="period">
-              <label for="reportFromDate">С:</label>
-              <input type="date" id="reportFromDate">
-              <label for="reportToDate">По:</label>
-              <input type="date" id="reportToDate">
-              <button id="generateReportBtn">Сформировать отчёт</button>
             </div>
             <div class="item__body" id="reportBody">
               <div class="item__body-row" id="reportBodyBox">
