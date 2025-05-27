@@ -1,5 +1,6 @@
 import "./style.scss";
-const main = document.querySelector('main');
+import * as XLSX from "xlsx";
+const main = document.querySelector("main");
 console.log(main);
 
 const header = document.querySelector("header");
@@ -12,8 +13,7 @@ const addExpense = document.getElementById("addExpense");
 const expenseBody = document.getElementById("expenseBody");
 const addIncome = document.getElementById("addIncome");
 const incomeBody = document.getElementById("incomeBody");
-const allButtons = document.querySelectorAll('.button');
-
+const allButtons = document.querySelectorAll(".button");
 
 const bodyHeight = body.getBoundingClientRect().height;
 const headerHeight = header.getBoundingClientRect().height;
@@ -54,18 +54,17 @@ function hideItems() {
   itemBodyes.forEach((i) => i.classList.remove("active"));
 }
 buttons.addEventListener("click", (e) => {
-
   if (e.target.classList.contains("button")) {
-    allButtons.forEach(btn => btn.classList.remove('active'))
+    allButtons.forEach((btn) => btn.classList.remove("active"));
     const dataAttr = e.target.getAttribute("data-item");
     const itemBody = document.getElementById(dataAttr);
     if (itemBody) {
-      e.target.classList.add('active')
-      if (e.target.classList.contains('reportBtn')) {
+      e.target.classList.add("active");
+      if (e.target.classList.contains("reportBtn")) {
         main.style.backgroundImage = "url('../public/rep.png')";
-      } else if (e.target.classList.contains('expensesBtn')) {
+      } else if (e.target.classList.contains("expensesBtn")) {
         main.style.backgroundImage = "url('../public/down.png')";
-      } else if (e.target.classList.contains('incomeBtn')) {
+      } else if (e.target.classList.contains("incomeBtn")) {
         main.style.backgroundImage = "url('../public/up.png')";
       }
       if (itemBody.classList.contains("active")) return;
@@ -188,8 +187,9 @@ function renderItem(item, container, prepend = true) {
     <div class="summ">
       <input type="number" value="${item.amount || ""}">
       <select>
-        ${container === expenseBody
-      ? `<option value="food">Продукты</option>
+        ${
+          container === expenseBody
+            ? `<option value="food">Продукты</option>
               <option value="meet">Мясо</option>
               <option value="sausages">Колбасные</option>
               <option value="dairy">Молочка</option>
@@ -206,10 +206,10 @@ function renderItem(item, container, prepend = true) {
               <option value="subscription">Абонплаты</option>
               <option value="communal">Коммуналка</option>
               <option value="others">Другое</option>`
-      : `<option value="main">Основная работа</option>
+            : `<option value="main">Основная работа</option>
               <option value="additional">Подработка</option>
               <option value="others">Другое</option>`
-    }
+        }
       </select>
     </div>
     <div class="notes">
@@ -363,8 +363,9 @@ function generateReport(fromDate, toDate) {
   const categoryReport = Object.entries(categorySums)
     .map(([cat, sum]) => {
       const displayName = categoryNames[cat] || cat; // fallback на raw значение
-      return `<li>${displayName}: ${sum.toFixed(2)} грн (${categoryPercents[cat]
-        }%)</li>`;
+      return `<li>${displayName}: ${sum.toFixed(2)} грн (${
+        categoryPercents[cat]
+      }%)</li>`;
     })
     .join("");
 
@@ -391,8 +392,8 @@ function generateReport(fromDate, toDate) {
     incomeCategorySums.main
   )}%)</li>
       <li>Подработка — ${incomeCategorySums.additional.toFixed(
-    2
-  )} грн (${getPercent(incomeCategorySums.additional)}%)</li>
+        2
+      )} грн (${getPercent(incomeCategorySums.additional)}%)</li>
       <li>Другое — ${incomeCategorySums.others.toFixed(2)} грн (${getPercent(
     incomeCategorySums.others
   )}%)</li>
@@ -406,8 +407,9 @@ function generateReport(fromDate, toDate) {
   const formattedFromDate = formatShortDate(fromDate);
   const formattedToDate = toDate ? formatShortDate(toDate) : "";
 
-  const periodHTML = `<p class="periodReport">( ${formattedFromDate}${formattedToDate ? ` - ${formattedToDate}` : ""
-    } )</p>`;
+  const periodHTML = `<p class="periodReport">( ${formattedFromDate}${
+    formattedToDate ? ` - ${formattedToDate}` : ""
+  } )</p>`;
 
   const reportHTML = `
   <h3>📊 Отчёт</h3>
@@ -429,7 +431,6 @@ function generateReport(fromDate, toDate) {
     categoryPercents
   )}</p>
 `;
-
 
   document.getElementById("reportBodyBox").innerHTML =
     reportHTML + recommendationHTML;
@@ -466,3 +467,73 @@ function generateRecommendation(
     "🎯 Стабильность — признак мастерства. Продолжай в том же духе!"
   );
 }
+// ексель
+document.querySelector(".export").addEventListener("click", exportToExcel);
+
+function exportToExcel() {
+  const data = JSON.parse(localStorage.getItem("financeData")); // замени на актуальный ключ
+
+  const { expenses = [], incomes = [] } = data;
+
+  const categoryNames = {
+    food: "Продукты",
+    meet: "Мясо",
+    sausages: "Колбасные",
+    dairy: "Молочка",
+    vegetables: "Овощи",
+    alcohol: "Алкоголь",
+    cofe: "Кофе/Чай",
+    fastfood: "Перекус",
+    tasty: "Вкусняшки",
+    cafe: "Кафе",
+    auto: "Авто",
+    gasStaion: "Заправка",
+    household: "Быт. химия",
+    mother: "Маме",
+    subscription: "Абонплаты",
+    communal: "Коммуналка",
+    others: "Другое",
+    main: "Основная работа",
+    additional: "Подработка",
+  };
+
+  const formatEntries = (entries, type) =>
+    entries.map((entry) => ({
+      Тип: type,
+      Дата: entry.date[0],
+      Время: entry.date[1],
+      Сумма: entry.amount,
+      Категория: categoryNames[entry.category] || entry.category,
+      Комментарий: entry.note || "",
+    }));
+
+  const allData = [
+    ...formatEntries(incomes, "Доход"),
+    ...formatEntries(expenses, "Расход"),
+  ];
+
+  const worksheet = XLSX.utils.json_to_sheet(allData);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Финансы");
+
+  XLSX.writeFile(workbook, "Отчет.xlsx");
+}
+
+// сброс
+const resetBtn = document.querySelector(".reset");
+const modal = document.getElementById("confirmModal");
+const yesBtn = document.getElementById("confirmYes");
+const noBtn = document.getElementById("confirmNo");
+
+resetBtn.addEventListener("click", () => {
+  modal.style.display = "flex";
+});
+
+yesBtn.addEventListener("click", () => {
+  localStorage.clear();
+  location.reload();
+});
+
+noBtn.addEventListener("click", () => {
+  modal.style.display = "none";
+});

@@ -16,7 +16,6 @@
   .itemWrapper {
     overflow: hidden;
     padding: 0 10px;
-
   }
 
   .item {
@@ -35,7 +34,7 @@
     }
     &__body {
       overflow-y: auto;
-      // overflow-x: hidden; 
+      // overflow-x: hidden;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
       border-radius: 12px;
       // margin: 15px;
@@ -45,7 +44,6 @@
       transition: box-shadow 0.3s ease;
       box-sizing: border-box;
       margin-bottom: 15px;
- 
 
       &:hover {
         box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
@@ -131,7 +129,7 @@
         border: 1.5px solid #ccc;
         border-radius: 8px;
         background: #fff;
-        font-size:14px;
+        font-size: 14px;
         cursor: pointer;
         transition: border-color 0.3s ease, box-shadow 0.3s ease;
         outline: none;
@@ -157,7 +155,7 @@
         }
         input[type="text"] {
           width: 100%;
-          padding:8px;
+          padding: 8px;
           border: 1.5px solid #ccc;
           border-radius: 8px;
           font-size: 14px;
@@ -174,10 +172,11 @@
   }
 }
 
-.addedRow {
+.addedRow,
+.export {
   display: inline-block;
   padding: 8px 20px;
-  background-color: #4caf50; /* зелёный фон */
+  background: linear-gradient(135deg, #43a047, #66bb6a);
   color: white; /* белый текст */
   font-weight: 600;
   font-size: 14px;
@@ -187,6 +186,8 @@
   transition: background-color 0.3s ease;
   text-align: center;
   text-transform: uppercase;
+  width: 100%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 .addedRow:hover {
@@ -295,7 +296,7 @@ ul {
   color: #fff;
   border-radius: 0.5rem;
   font-weight: 500;
-  font-size:  14px;
+  font-size: 14px;
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
   transition: background-color 0.25s ease, transform 0.2s ease;
@@ -347,6 +348,6 @@ ul {
   font-style: italic;
   text-decoration: underline;
 }
-#reportBody{
+#reportBody {
   padding-bottom: 25px;
 }

@@ -1,5 +1,6 @@
 @use "./buttons.scss";
 @use "./content.scss";
+@use "./modalReset.scss";
 
 *,
 *::before,
@@ -87,6 +88,16 @@ header {
   text-align: center;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
   // border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  .reset {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    border-radius: 50%;
+    top: 25%;
+    right: 5px;
+  }
 
   h1 {
     font-size: 26px;
@@ -107,10 +118,10 @@ main {
   // padding: 10px;
   display: flex;
   flex-direction: column;
-  background-image: url('../public/down.png');
-  background-size:40dvw;
+  background-image: url("../public/down.png");
+  background-size: 40dvw;
   background-repeat: no-repeat;
-  background-position:bottom;
+  background-position: bottom;
 }
 
 footer {
@@ -138,7 +149,7 @@ footer {
   align-items: center;
   justify-content: center;
   color: #ffffff;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   text-align: center;
   gap: 20px;
   animation: fadeOut 1s ease-out 4s forwards;
@@ -163,28 +174,36 @@ footer {
   .preload__last-text {
     font-size: clamp(1.5rem, 5vw, 2.5rem);
     font-weight: 700;
-    white-space: nowrap;          /* чтобы текст не переносился */
-    overflow: hidden;             /* скрыть текст, выходящий за пределы блока */
+    white-space: nowrap; /* чтобы текст не переносился */
+    overflow: hidden; /* скрыть текст, выходящий за пределы блока */
     border-right: 3px solid white; /* имитация курсора */
-    width: 0;                    /* изначальная ширина */
-    animation: typing 1.5s steps(30, end) forwards, 
-               blink-caret 0.75s step-end infinite;
-    opacity: 1;          
+    width: 0; /* изначальная ширина */
+    animation: typing 1.5s steps(30, end) forwards,
+      blink-caret 0.75s step-end infinite;
+    opacity: 1;
     animation-delay: 2.7s;
   }
-  
+
   /* Анимация печати */
   @keyframes typing {
-    from { width: 0 }
-    to { width: 100% }
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
   }
-  
+
   /* Мигающий курсор */
   @keyframes blink-caret {
-    from, to { border-color: transparent }
-    50% { border-color: white }
+    from,
+    to {
+      border-color: transparent;
+    }
+    50% {
+      border-color: white;
+    }
   }
-  
 
   .preload__spinner img {
     width: clamp(150px, 40vw, 300px);
@@ -257,8 +276,8 @@ footer {
 
     background: linear-gradient(
       to top,
-      rgba(255, 255, 255, 0.9),  /* более плотный белый */
-      rgba(255, 255, 255, 0.3)
+      rgba(255, 255, 255, 0.9),
+      /* более плотный белый */ rgba(255, 255, 255, 0.3)
     );
     filter: blur(6px); /* увеличиваем размытие */
     pointer-events: none;
