@@ -21,7 +21,7 @@
 
   .item {
     &__title {
-      font-size: 32px;
+      font-size: 18px;
       font-weight: 600;
       // background-color: #f0f0f0;
       // color: #333;
@@ -39,7 +39,7 @@
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
       border-radius: 12px;
       // margin: 15px;
-      padding: 15px;
+      padding: 8px;
       margin-top: 0;
       background: #fefefe;
       transition: box-shadow 0.3s ease;
@@ -53,13 +53,13 @@
     }
 
     &__body-row {
-      padding: 10px;
+      padding: 8px;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.07);
       border-radius: 8px;
       background: #fff;
       display: flex;
       flex-direction: column;
-      gap: 5px;
+      gap: 4px;
       transition: box-shadow 0.3s ease;
       border: 2px solid #ccc;
       position: relative;
@@ -112,10 +112,10 @@
       .summ input[type="number"] {
         flex: 1 1 auto; // занимает всё доступное пространство
         min-width: 0; // позволяет сжиматься
-        padding: 0.5rem 0.75rem;
+        padding: 4px;
         border: 1.5px solid #ccc;
         border-radius: 8px;
-        font-size: 1rem;
+        font-size: 14px;
         transition: border-color 0.3s ease, box-shadow 0.3s ease;
         outline: none;
 
@@ -127,11 +127,11 @@
 
       .summ select {
         flex: 0 0 150px; // фиксированная ширина, не растягивается
-        padding: 0.5rem 0.75rem;
+        padding: 8px;
         border: 1.5px solid #ccc;
         border-radius: 8px;
         background: #fff;
-        font-size: 1rem;
+        font-size:14px;
         cursor: pointer;
         transition: border-color 0.3s ease, box-shadow 0.3s ease;
         outline: none;
@@ -157,10 +157,10 @@
         }
         input[type="text"] {
           width: 100%;
-          padding: 0.5rem 0.75rem;
+          padding:8px;
           border: 1.5px solid #ccc;
           border-radius: 8px;
-          font-size: 1rem;
+          font-size: 14px;
           transition: border-color 0.3s ease, box-shadow 0.3s ease;
           outline: none;
 
@@ -176,16 +176,17 @@
 
 .addedRow {
   display: inline-block;
-  padding: 10px 20px;
+  padding: 8px 20px;
   background-color: #4caf50; /* зелёный фон */
   color: white; /* белый текст */
   font-weight: 600;
-  font-size: 16px;
+  font-size: 14px;
   border-radius: 6px;
   cursor: pointer;
   user-select: none;
   transition: background-color 0.3s ease;
   text-align: center;
+  text-transform: uppercase;
 }
 
 .addedRow:hover {
@@ -225,26 +226,27 @@
   font-size: 14px;
   background-color: #fff;
   color: #333;
+  max-width: 30%;
 }
 
 .period button {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 12px 16px;
+  padding: 8px 16px;
   border: none;
   border-radius: 10px;
   cursor: pointer;
   color: #fff;
   text-transform: uppercase;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 14px;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
   box-shadow: 0px 0px 5px #ccc;
   transition: transform 0.1s ease, box-shadow 0.3s ease, filter 0.3s ease;
   user-select: none;
   background: linear-gradient(to bottom, #3b82f6, #2563eb);
-  width: 100%;
+  // width: 100%;
 }
 
 .period button:hover {
@@ -288,12 +290,12 @@ ul {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.6rem 1rem;
+  padding: 4px 16px;
   background-color: #f44336; // насыщенный красный
   color: #fff;
   border-radius: 0.5rem;
   font-weight: 500;
-  font-size: 0.95rem;
+  font-size:  14px;
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
   transition: background-color 0.25s ease, transform 0.2s ease;

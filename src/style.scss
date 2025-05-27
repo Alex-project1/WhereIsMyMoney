@@ -83,13 +83,13 @@ body {
 header {
   background: linear-gradient(135deg, #007bff, #0056b3);
   color: white;
-  padding: 15px 5px;
+  padding: 8px 5px;
   text-align: center;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
   // border-bottom: 2px solid rgba(255, 255, 255, 0.1);
 
   h1 {
-    font-size: 2rem;
+    font-size: 26px;
     margin: 0;
     letter-spacing: 1px;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
@@ -165,7 +165,7 @@ footer {
     font-weight: 700;
     white-space: nowrap;          /* чтобы текст не переносился */
     overflow: hidden;             /* скрыть текст, выходящий за пределы блока */
-    border-right: 3px solid black; /* имитация курсора */
+    border-right: 3px solid white; /* имитация курсора */
     width: 0;                    /* изначальная ширина */
     animation: typing 1.5s steps(30, end) forwards, 
                blink-caret 0.75s step-end infinite;
