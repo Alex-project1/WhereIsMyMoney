@@ -10,11 +10,12 @@
 
 <body>
   <div class="preload">
-    <div class="preload__top-text">Where Is My Money</div>
+    <div class="preload__top-text">Where Is My Money ???</div>
     <div class="preload__spinner">
       <img src="./public/logo.png" alt="Loading">
     </div>
     <div class="preload__bottom-text">Где БАБКИ ???</div>
+    <div class="preload__last-text">Проверяем, куда ты их слил...</div>
   </div>
 
 
@@ -26,7 +27,7 @@
     <div class="buttons" id="buttons">
       <div class="button full-width reportBtn" data-item="report">ОТЧЕТ</div>
       <div class="half-buttons">
-        <div class="button expensesBtn" data-item="expense">РАСХОДЫ</div>
+        <div class="button expensesBtn active" data-item="expense">РАСХОДЫ</div>
         <div class="button incomeBtn" data-item="income">ДОХОДЫ</div>
       </div>
       <div class="period" id="period">
@@ -47,13 +48,16 @@
             <div class="item__title">
               ОТЧЕТ
             </div>
-            <div class="item__body" id="reportBody">
-              <div class="item__body-row show" id="reportBodyBox">
+            <div class="box__shadow">
 
-
+              <div class="item__body" id="reportBody">
+                <div class="item__body-row show" id="reportBodyBox">
+  
+  
+                </div>
+  
+  
               </div>
-
-
             </div>
 
 
@@ -66,8 +70,11 @@
             <div class="item__title">
               РАСХОДЫ
             </div>
-            <div class="item__body" id="expenseBody">
-
+            <div class="box__shadow">
+              <div class="item__body" id="expenseBody">
+  
+  
+              </div>
 
             </div>
             <div class="addedRow" id="addExpense">
@@ -84,11 +91,13 @@
               ДОХОДЫ
             </div>
 
+<div class="box__shadow">
 
-            <div class="item__body" id="incomeBody">
+  <div class="item__body" id="incomeBody">
 
 
-            </div>
+  </div>
+</div>
           </div>
           <div class="addedRow" id="addIncome">
             Добавить доход

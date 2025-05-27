@@ -1,4 +1,7 @@
 import "./style.scss";
+const main = document.querySelector('main');
+console.log(main);
+
 const header = document.querySelector("header");
 const body = document.querySelector("body");
 const footer = document.querySelector("footer");
@@ -9,6 +12,8 @@ const addExpense = document.getElementById("addExpense");
 const expenseBody = document.getElementById("expenseBody");
 const addIncome = document.getElementById("addIncome");
 const incomeBody = document.getElementById("incomeBody");
+const allButtons = document.querySelectorAll('.button');
+
 
 const bodyHeight = body.getBoundingClientRect().height;
 const headerHeight = header.getBoundingClientRect().height;
@@ -49,10 +54,20 @@ function hideItems() {
   itemBodyes.forEach((i) => i.classList.remove("active"));
 }
 buttons.addEventListener("click", (e) => {
+
   if (e.target.classList.contains("button")) {
+    allButtons.forEach(btn => btn.classList.remove('active'))
     const dataAttr = e.target.getAttribute("data-item");
     const itemBody = document.getElementById(dataAttr);
     if (itemBody) {
+      e.target.classList.add('active')
+      if (e.target.classList.contains('reportBtn')) {
+        main.style.backgroundImage = "url('../public/rep.png')";
+      } else if (e.target.classList.contains('expensesBtn')) {
+        main.style.backgroundImage = "url('../public/down.png')";
+      } else if (e.target.classList.contains('incomeBtn')) {
+        main.style.backgroundImage = "url('../public/up.png')";
+      }
       if (itemBody.classList.contains("active")) return;
       hideItems();
       itemBody.classList.add("active");
@@ -173,9 +188,8 @@ function renderItem(item, container, prepend = true) {
     <div class="summ">
       <input type="number" value="${item.amount || ""}">
       <select>
-        ${
-          container === expenseBody
-            ? `<option value="food">Продукты</option>
+        ${container === expenseBody
+      ? `<option value="food">Продукты</option>
               <option value="meet">Мясо</option>
               <option value="sausages">Колбасные</option>
               <option value="dairy">Молочка</option>
@@ -192,10 +206,10 @@ function renderItem(item, container, prepend = true) {
               <option value="subscription">Абонплаты</option>
               <option value="communal">Коммуналка</option>
               <option value="others">Другое</option>`
-            : `<option value="main">Основная работа</option>
+      : `<option value="main">Основная работа</option>
               <option value="additional">Подработка</option>
               <option value="others">Другое</option>`
-        }
+    }
       </select>
     </div>
     <div class="notes">
@@ -349,9 +363,8 @@ function generateReport(fromDate, toDate) {
   const categoryReport = Object.entries(categorySums)
     .map(([cat, sum]) => {
       const displayName = categoryNames[cat] || cat; // fallback на raw значение
-      return `<li>${displayName}: ${sum.toFixed(2)} грн (${
-        categoryPercents[cat]
-      }%)</li>`;
+      return `<li>${displayName}: ${sum.toFixed(2)} грн (${categoryPercents[cat]
+        }%)</li>`;
     })
     .join("");
 
@@ -378,8 +391,8 @@ function generateReport(fromDate, toDate) {
     incomeCategorySums.main
   )}%)</li>
       <li>Подработка — ${incomeCategorySums.additional.toFixed(
-        2
-      )} грн (${getPercent(incomeCategorySums.additional)}%)</li>
+    2
+  )} грн (${getPercent(incomeCategorySums.additional)}%)</li>
       <li>Другое — ${incomeCategorySums.others.toFixed(2)} грн (${getPercent(
     incomeCategorySums.others
   )}%)</li>
@@ -393,30 +406,30 @@ function generateReport(fromDate, toDate) {
   const formattedFromDate = formatShortDate(fromDate);
   const formattedToDate = toDate ? formatShortDate(toDate) : "";
 
-  const periodHTML = `<p class="periodReport">( ${formattedFromDate}${
-    formattedToDate ? ` - ${formattedToDate}` : ""
-  } )</p>`;
+  const periodHTML = `<p class="periodReport">( ${formattedFromDate}${formattedToDate ? ` - ${formattedToDate}` : ""
+    } )</p>`;
 
   const reportHTML = `
-    <h3>📊 Отчёт</h3>
-    ${periodHTML}
-    <p><strong>Доходы:</strong> ${totalIncomes.toFixed(2)} грн</p>
-    ${incomeCategoryDetails}
-    <p><strong>Расходы:</strong> ${totalExpenses.toFixed(2)} грн</p>
-    <ul>${categoryReport}</ul>
-    <p><strong>Баланс:</strong> ${balance.toFixed(2)} грн</p>
-    <p><strong>Процент прибыли/убытка:</strong> ${profitPercent}%</p>
-  `;
+  <h3>📊 Отчёт</h3>
+  ${periodHTML}
+  <p><strong>Доходы:</strong> ${totalIncomes.toFixed(2)} грн</p>
+  ${incomeCategoryDetails}
+  <p><strong>Расходы:</strong> ${totalExpenses.toFixed(2)} грн</p>
+  <ul>${categoryReport}</ul>
+  <p><strong>Баланс:</strong> ${balance.toFixed(2)} грн</p>
+  <p><strong>📈 Разница:</strong> ${profitPercent}%</p>
+`;
 
   const recommendationHTML = `
-    <h4>📢 Рекомендации:</h4>
-    <p>${generateRecommendation(
-      totalIncomes,
-      totalExpenses,
-      balance,
-      categoryPercents
-    )}</p>
-  `;
+  <h4>📢 Советы от «Где БАБКИ???»</h4>
+  <p>${generateRecommendation(
+    totalIncomes,
+    totalExpenses,
+    balance,
+    categoryPercents
+  )}</p>
+`;
+
 
   document.getElementById("reportBodyBox").innerHTML =
     reportHTML + recommendationHTML;
@@ -432,24 +445,24 @@ function generateRecommendation(
 
   if (totalIncomes === 0) {
     recommendation +=
-      "💡 У вас нет доходов за выбранный период. Рекомендуем найти источник дохода или подработку.<br>";
+      "💡 Где бабки? Их точно тут не было. Может, пора завести хотя бы одну подработку?<br>";
   } else if (balance < 0) {
     recommendation +=
-      "⚠️ Ваши расходы превышают доходы. Постарайтесь оптимизировать траты.<br>";
+      "⚠️ Бабки улетают быстрее, чем прилетают. Может, тормознуть шопинг?<br>";
   } else if (balance > 0 && totalExpenses / totalIncomes < 0.7) {
     recommendation +=
-      "✅ Отличный результат! Вы тратите меньше 70% от доходов. Рекомендуем часть средств инвестировать или отложить.<br>";
+      "✅ Красава! Тратишь с умом — остаются бабки. Может, пора их куда-то приткнуть: в кубышку или в дело? <br>";
   }
 
   for (const [category, percent] of Object.entries(categoryPercents)) {
     if (percent > 50) {
       const displayName = categoryNames[category] || category;
-      recommendation += `🔎 Расходы по категории <strong>${displayName}</strong> составляют ${percent}%. Подумайте, можно ли здесь сэкономить.<br>`;
+      recommendation += `🔎 На <strong>${displayName}</strong> уходит ${percent}%. Не жирновато, брат? Может пора тормознуть?<br>`;
     }
   }
 
   return (
     recommendation ||
-    "🎯 Финансовая ситуация стабильна. Продолжайте в том же духе!"
+    "🎯 Стабильность — признак мастерства. Продолжай в том же духе!"
   );
 }
