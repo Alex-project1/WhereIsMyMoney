@@ -407,12 +407,12 @@ function generateReport(fromDate, toDate) {
   const formattedFromDate = formatShortDate(fromDate);
   const formattedToDate = toDate ? formatShortDate(toDate) : "";
 
-  const periodHTML = `<p class="periodReport">( ${formattedFromDate}${
+  const periodHTML = `<p class="periodReport">${formattedFromDate}${
     formattedToDate ? ` - ${formattedToDate}` : ""
-  } )</p>`;
+  } </p>`;
 
   const reportHTML = `
-  <h3>📊 Отчёт</h3>
+
   ${periodHTML}
   <p><strong>Доходы:</strong> ${totalIncomes.toFixed(2)} грн</p>
   ${incomeCategoryDetails}
@@ -471,55 +471,71 @@ function generateRecommendation(
 document.querySelector(".export").addEventListener("click", exportToExcel);
 
 function exportToExcel() {
-  const data = JSON.parse(localStorage.getItem("financeData")); // замени на актуальный ключ
-
+  const data = JSON.parse(localStorage.getItem("financeData")); // замени ключ при необходимости
   const { expenses = [], incomes = [] } = data;
 
-  const categoryNames = {
-    food: "Продукты",
-    meet: "Мясо",
-    sausages: "Колбасные",
-    dairy: "Молочка",
-    vegetables: "Овощи",
-    alcohol: "Алкоголь",
-    cofe: "Кофе/Чай",
-    fastfood: "Перекус",
-    tasty: "Вкусняшки",
-    cafe: "Кафе",
-    auto: "Авто",
-    gasStaion: "Заправка",
-    household: "Быт. химия",
-    mother: "Маме",
-    subscription: "Абонплаты",
-    communal: "Коммуналка",
-    others: "Другое",
-    main: "Основная работа",
-    additional: "Подработка",
-  };
 
   const formatEntries = (entries, type) =>
     entries.map((entry) => ({
       Тип: type,
       Дата: entry.date[0],
       Время: entry.date[1],
-      Сумма: entry.amount,
+      Сумма: parseFloat(entry.amount) || 0,
       Категория: categoryNames[entry.category] || entry.category,
       Комментарий: entry.note || "",
     }));
 
-  const allData = [
-    ...formatEntries(incomes, "Доход"),
-    ...formatEntries(expenses, "Расход"),
-  ];
+  const allIncomes = formatEntries(incomes, "Доход");
+  const allExpenses = formatEntries(expenses, "Расход");
+
+  const allData = [...allIncomes, ...allExpenses];
 
   const worksheet = XLSX.utils.json_to_sheet(allData);
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Финансы");
 
+  // Собираем итоги
+  const expenseSummary = {};
+  const incomeSummary = {};
+
+  let totalExpenses = 0;
+  let totalIncomes = 0;
+
+  allExpenses.forEach((e) => {
+    totalExpenses += e.Сумма;
+    expenseSummary[e.Категория] = (expenseSummary[e.Категория] || 0) + e.Сумма;
+  });
+
+  allIncomes.forEach((e) => {
+    totalIncomes += e.Сумма;
+    incomeSummary[e.Категория] = (incomeSummary[e.Категория] || 0) + e.Сумма;
+  });
+
+  const summarySheet = XLSX.utils.aoa_to_sheet([
+    ["ИТОГИ"],
+    [],
+    ["Общие расходы", totalExpenses],
+    ["Категория", "Сумма", "% от всех расходов"],
+    ...Object.entries(expenseSummary).map(([cat, sum]) => [
+      cat,
+      sum,
+      totalExpenses ? (sum / totalExpenses).toFixed(2) * 100 + "%" : "0%",
+    ]),
+    [],
+    ["Общие доходы", totalIncomes],
+    ["Категория", "Сумма", "% от всех доходов"],
+    ...Object.entries(incomeSummary).map(([cat, sum]) => [
+      cat,
+      sum,
+      totalIncomes ? (sum / totalIncomes).toFixed(2) * 100 + "%" : "0%",
+    ]),
+  ]);
+
+  XLSX.utils.book_append_sheet(workbook, summarySheet, "Итоги");
+
   XLSX.writeFile(workbook, "Отчет.xlsx");
 }
-
-// сброс
+// ресет
 const resetBtn = document.querySelector(".reset");
 const modal = document.getElementById("confirmModal");
 const yesBtn = document.getElementById("confirmYes");
