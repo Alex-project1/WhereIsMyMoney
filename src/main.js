@@ -20,6 +20,8 @@ const headerHeight = header.getBoundingClientRect().height;
 const footerHeight = footer.getBoundingClientRect().height;
 const itemTitleHeight = itemTitle.getBoundingClientRect().height;
 const buttonsHeight = buttons.getBoundingClientRect().height;
+const exportData = document.querySelector(".export");
+const modalResetContent = document.querySelector(".modal-content");
 
 const categoryNames = {
   food: "Продукты",
@@ -468,73 +470,72 @@ function generateRecommendation(
   );
 }
 // ексель
-document.querySelector(".export").addEventListener("click", exportToExcel);
+// document.querySelector(".export").addEventListener("click", exportToExcel);
 
-function exportToExcel() {
-  const data = JSON.parse(localStorage.getItem("financeData")); // замени ключ при необходимости
-  const { expenses = [], incomes = [] } = data;
+// function exportToExcel() {
+//   const data = JSON.parse(localStorage.getItem("financeData")); // замени ключ при необходимости
+//   const { expenses = [], incomes = [] } = data;
 
+//   const formatEntries = (entries, type) =>
+//     entries.map((entry) => ({
+//       Тип: type,
+//       Дата: entry.date[0],
+//       Время: entry.date[1],
+//       Сумма: parseFloat(entry.amount) || 0,
+//       Категория: categoryNames[entry.category] || entry.category,
+//       Комментарий: entry.note || "",
+//     }));
 
-  const formatEntries = (entries, type) =>
-    entries.map((entry) => ({
-      Тип: type,
-      Дата: entry.date[0],
-      Время: entry.date[1],
-      Сумма: parseFloat(entry.amount) || 0,
-      Категория: categoryNames[entry.category] || entry.category,
-      Комментарий: entry.note || "",
-    }));
+//   const allIncomes = formatEntries(incomes, "Доход");
+//   const allExpenses = formatEntries(expenses, "Расход");
 
-  const allIncomes = formatEntries(incomes, "Доход");
-  const allExpenses = formatEntries(expenses, "Расход");
+//   const allData = [...allIncomes, ...allExpenses];
 
-  const allData = [...allIncomes, ...allExpenses];
+//   const worksheet = XLSX.utils.json_to_sheet(allData);
+//   const workbook = XLSX.utils.book_new();
+//   XLSX.utils.book_append_sheet(workbook, worksheet, "Финансы");
 
-  const worksheet = XLSX.utils.json_to_sheet(allData);
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, "Финансы");
+//   // Собираем итоги
+//   const expenseSummary = {};
+//   const incomeSummary = {};
 
-  // Собираем итоги
-  const expenseSummary = {};
-  const incomeSummary = {};
+//   let totalExpenses = 0;
+//   let totalIncomes = 0;
 
-  let totalExpenses = 0;
-  let totalIncomes = 0;
+//   allExpenses.forEach((e) => {
+//     totalExpenses += e.Сумма;
+//     expenseSummary[e.Категория] = (expenseSummary[e.Категория] || 0) + e.Сумма;
+//   });
 
-  allExpenses.forEach((e) => {
-    totalExpenses += e.Сумма;
-    expenseSummary[e.Категория] = (expenseSummary[e.Категория] || 0) + e.Сумма;
-  });
+//   allIncomes.forEach((e) => {
+//     totalIncomes += e.Сумма;
+//     incomeSummary[e.Категория] = (incomeSummary[e.Категория] || 0) + e.Сумма;
+//   });
 
-  allIncomes.forEach((e) => {
-    totalIncomes += e.Сумма;
-    incomeSummary[e.Категория] = (incomeSummary[e.Категория] || 0) + e.Сумма;
-  });
+//   const summarySheet = XLSX.utils.aoa_to_sheet([
+//     ["ИТОГИ"],
+//     [],
+//     ["Общие расходы", totalExpenses],
+//     ["Категория", "Сумма", "% от всех расходов"],
+//     ...Object.entries(expenseSummary).map(([cat, sum]) => [
+//       cat,
+//       sum,
+//       totalExpenses ? (sum / totalExpenses).toFixed(2) * 100 + "%" : "0%",
+//     ]),
+//     [],
+//     ["Общие доходы", totalIncomes],
+//     ["Категория", "Сумма", "% от всех доходов"],
+//     ...Object.entries(incomeSummary).map(([cat, sum]) => [
+//       cat,
+//       sum,
+//       totalIncomes ? (sum / totalIncomes).toFixed(2) * 100 + "%" : "0%",
+//     ]),
+//   ]);
 
-  const summarySheet = XLSX.utils.aoa_to_sheet([
-    ["ИТОГИ"],
-    [],
-    ["Общие расходы", totalExpenses],
-    ["Категория", "Сумма", "% от всех расходов"],
-    ...Object.entries(expenseSummary).map(([cat, sum]) => [
-      cat,
-      sum,
-      totalExpenses ? (sum / totalExpenses).toFixed(2) * 100 + "%" : "0%",
-    ]),
-    [],
-    ["Общие доходы", totalIncomes],
-    ["Категория", "Сумма", "% от всех доходов"],
-    ...Object.entries(incomeSummary).map(([cat, sum]) => [
-      cat,
-      sum,
-      totalIncomes ? (sum / totalIncomes).toFixed(2) * 100 + "%" : "0%",
-    ]),
-  ]);
+//   XLSX.utils.book_append_sheet(workbook, summarySheet, "Итоги");
 
-  XLSX.utils.book_append_sheet(workbook, summarySheet, "Итоги");
-
-  XLSX.writeFile(workbook, "Отчет.xlsx");
-}
+//   XLSX.writeFile(workbook, "Отчет.xlsx");
+// }
 // ресет
 const resetBtn = document.querySelector(".reset");
 const modal = document.getElementById("confirmModal");
@@ -542,7 +543,8 @@ const yesBtn = document.getElementById("confirmYes");
 const noBtn = document.getElementById("confirmNo");
 
 resetBtn.addEventListener("click", () => {
-  modal.style.display = "flex";
+  modal.classList.add("show");
+  modalResetContent.classList.add("show");
 });
 
 yesBtn.addEventListener("click", () => {
@@ -551,5 +553,65 @@ yesBtn.addEventListener("click", () => {
 });
 
 noBtn.addEventListener("click", () => {
-  modal.style.display = "none";
+  modal.classList.remove("show");
+  modalResetContent.classList.remove("show");
+});
+
+// AKfycbwl0bRDFOSXRGQQyQY0FW-HMBfVxPs0FigW_b_Ydl7nWarZoB4k5mmPWRokcKEPQ1Tq2g
+
+const modalSend = document.getElementById("modalSend");
+const modalText = document.getElementById("modalSend-text");
+const modalButtons = document.getElementById("modalSend-buttons");
+const yesBtnSend = document.getElementById("clear-yes");
+const noBtnSend = document.getElementById("clear-no");
+
+exportData.addEventListener("click", () => {
+  const jsonString = localStorage.getItem("financeData");
+  const data = JSON.parse(jsonString);
+  // Показываем модалку с отправкой
+  modalSend.classList.add("show");
+  modalText.textContent = "Отправляю данные...";
+  modalButtons.classList.remove("show");
+
+  fetch(
+    "https://morning-lake-0dfa.kiriluka68.workers.dev/?url=https://script.google.com/macros/s/AKfycbwl0bRDFOSXRGQQyQY0FW-HMBfVxPs0FigW_b_Ydl7nWarZoB4k5mmPWRokcKEPQ1Tq2g/exec",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  )
+    .then((response) => {
+      if (!response.ok) throw new Error("Ошибка сети");
+      return response.text();
+    })
+    .then(() => {
+      // После успешной отправки показываем вопрос
+      modalText.textContent =
+        "Данные успешно отправлены, хотите очистить данные в приложении?";
+      modalButtons.classList.add("show");
+    })
+    .catch(() => {
+      modalText.textContent = "Произошла ошибка при отправке данных.";
+      modalButtons.classList.add("show");
+      yesBtnSend.style.display = "none";
+      noBtnSend.textContent = "Закрыть";
+    });
+});
+
+yesBtnSend.addEventListener("click", () => {
+  localStorage.removeItem("financeData");
+  modalSend.classList.remove("show");
+  yesBtnSend.style.display = "inline-block";
+  noBtnSend.textContent = "Нет";
+  localStorage.clear();
+  location.reload();
+});
+
+noBtnSend.addEventListener("click", () => {
+  modalSend.classList.remove("show");
+  yesBtnSend.style.display = "inline-block";
+  noBtnSend.textContent = "Нет";
 });

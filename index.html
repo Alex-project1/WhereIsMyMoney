@@ -9,7 +9,7 @@
 </head>
 
 <body>
-  <div id="confirmModal" class="modal" style="display:none;">
+  <div id="confirmModal" class="modal">
     <div class="modal-content">
       <p>Подтвердите, что хотите удалить все данные</p>
       <button id="confirmNo">Нет</button>
@@ -66,7 +66,7 @@
 
               </div>
             </div>
-            <button class="export ">📤 Экспорт в Excel</button>
+            <button class="export ">ОТПРАВИТЬ </button>
 
 
 
@@ -117,6 +117,15 @@
     </div>
 
   </main>
+  <div id="modalSend" class="modalSend">
+    <div class="modalSend-content">
+      <p id="modalSend-text">Отправляю данные...</p>
+      <div id="modalSend-buttons" class="hidden">
+        <button id="clear-no">Нет</button>
+        <button id="clear-yes">Да</button>
+      </div>
+    </div>
+  </div>
   <footer>
     <p> «Где БАБКИ?» - Трать разумно, живи комфортно!</p>
   </footer>
