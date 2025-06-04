@@ -563,14 +563,14 @@ const modalSend = document.getElementById("modalSend");
 const modalText = document.getElementById("modalSend-text");
 const modalButtons = document.getElementById("modalSend-buttons");
 const yesBtnSend = document.getElementById("clear-yes");
-const noBtnSend = document.getElementById("clear-no");
+
 
 exportData.addEventListener("click", () => {
   const jsonString = localStorage.getItem("financeData");
   const data = JSON.parse(jsonString);
   // Показываем модалку с отправкой
   modalSend.classList.add("show");
-  modalText.textContent = "Отправляю данные...";
+  modalText.textContent = "Отправляю данные... После отправки они будут удалены из приложения, чтобы избежать повторной отправки.";
   modalButtons.classList.remove("show");
 
   fetch(
@@ -590,14 +590,14 @@ exportData.addEventListener("click", () => {
     .then(() => {
       // После успешной отправки показываем вопрос
       modalText.textContent =
-        "Данные успешно отправлены, хотите очистить данные в приложении?";
+        "Данные успешно отправлены! Приложение будет перезапущенно!";
       modalButtons.classList.add("show");
     })
     .catch(() => {
       modalText.textContent = "Произошла ошибка при отправке данных.";
       modalButtons.classList.add("show");
       yesBtnSend.style.display = "none";
-      noBtnSend.textContent = "Закрыть";
+
     });
 });
 
@@ -605,13 +605,9 @@ yesBtnSend.addEventListener("click", () => {
   localStorage.removeItem("financeData");
   modalSend.classList.remove("show");
   yesBtnSend.style.display = "inline-block";
-  noBtnSend.textContent = "Нет";
+
   localStorage.clear();
   location.reload();
 });
 
-noBtnSend.addEventListener("click", () => {
-  modalSend.classList.remove("show");
-  yesBtnSend.style.display = "inline-block";
-  noBtnSend.textContent = "Нет";
-});
+
